@@ -1,2 +1,22 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+
+
+.signin-form {
+  display: inline;
+}
+
+.signout-form {
+  display: inline;
+}
+
+.game-board {
+  height: 650px;
+}
+
+.game-cell {
+  background: #0000ff;
+  height: 30%;
+  border: 5px solid red;
+}
