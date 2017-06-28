@@ -40,9 +40,54 @@ const changePassword = (data) => {
   })
 }
 
+const getGames = () => {
+  return $.ajax({
+    url: config.url + '/games',
+    method: 'GET',
+    headers: {
+      'Authorization': 'Token token=' + store.user.token
+    }
+  })
+}
+
+const getGameID = (id) => {
+  return $.ajax({
+    url: config.url + '/games/' + id,
+    method: 'GET',
+    headers: {
+      'Authorization': 'Token token=' + store.user.token
+    }
+  })
+}
+
+const createGame = () => {
+  return $.ajax({
+    url: config.url + '/games',
+    method: 'POST',
+    headers: {
+      'Authorization': 'Token token=' + store.user.token
+    }
+  })
+}
+
+const updateGame = (id, data) => {
+  return $.ajax({
+    url: config.url + '/games/' + id,
+    method: 'PATCH',
+    headers: {
+      'Authorization': 'Token token=' + store.user.token
+    },
+    data
+  })
+}
+
 module.exports = {
   signUp,
   signIn,
   signOut,
-  changePassword
+  changePassword,
+  getGames,
+  getGameID,
+  createGame,
+  updateGame
 }

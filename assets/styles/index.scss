@@ -15,6 +15,10 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
   text-align: center;
 }
 
+.game-board {
+  // visibility: hidden;
+}
+
 .game-cell {
   display: inline-block;
   background-color: #000000;

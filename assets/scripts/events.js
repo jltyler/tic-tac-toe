@@ -48,6 +48,46 @@ const onChangePassword = (event) => {
   }
 }
 
+const onNewGame = function (event) {
+  event.preventDefault()
+  if (store.user) {
+    api.createGame()
+    .done(game.openGame)
+    .catch(function () {
+      console.log('onNewGame error!')
+    })
+  } else {
+    console.log('You have to be signed in!')
+  }
+}
+
+const onGetGame = function (event) {
+  event.preventDefault()
+  const data = getFormFields(event.target)
+  if (store.user) {
+    api.getGameID(data.game.id)
+    .done(game.openGame)
+    .catch(function () {
+      console.log('onGetGame error!')
+    })
+  } else {
+    console.log('You have to be signed in!')
+  }
+}
+
+const onGetAllGames = function (event) {
+  event.preventDefault()
+  if (store.user) {
+    api.getGames()
+    .done(game.retrieveGames)
+    .catch(function () {
+      console.log('onGetAllGames error!')
+    })
+  } else {
+    console.log('You have to be signed in!')
+  }
+}
+
 const onCellClick = function (event) {
   const cell = $(this).data().id
   game.makeMove(cell)
@@ -55,10 +95,18 @@ const onCellClick = function (event) {
 }
 
 const attachHandlers = () => {
+  // Auth API events
   $('.signup-form').on('submit', onSignUp)
   $('.signin-form').on('submit', onSignIn)
   $('.signout-form').on('submit', onSignOut)
   $('.changepwd-form').on('submit', onChangePassword)
+
+  // Game API events
+  $('.newgame-form').on('submit', onNewGame)
+  $('.getgame-form').on('submit', onGetGame)
+  $('.getallgames-form').on('submit', onGetAllGames)
+
+  // Cell clicked event
   $('.game-cell').on('click', onCellClick)
 }
 
