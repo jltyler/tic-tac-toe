@@ -11,12 +11,13 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
   display: inline;
 }
 
-.game-board {
-  height: 650px;
+.game-status {
+  text-align: center;
 }
 
 .game-cell {
-  background: #0000ff;
-  height: 30%;
+  display: inline-block;
+  background-color: #000000;
+  height: 150px;
   border: 5px solid red;
 }

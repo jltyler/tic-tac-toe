@@ -4,6 +4,7 @@ const api = require('./api')
 const getFormFields = require('../../lib/get-form-fields')
 const ui = require('./ui')
 const store = require('./store')
+const game = require('./game')
 
 const onSignUp = (event) => {
   event.preventDefault()
@@ -48,8 +49,9 @@ const onChangePassword = (event) => {
 }
 
 const onCellClick = function (event) {
-  console.log('Cell clicked event: ', event)
-  console.log('Cell clicked event data: ', $(this).data().id)
+  const cell = $(this).data().id
+  game.makeMove(cell)
+  console.log('Cell clicked: ', cell)
 }
 
 const attachHandlers = () => {
