@@ -23,7 +23,7 @@ const retrieveGames = function (response) {
   $('#-games-modal-stats').text('Stats: (W: ' + stats.win + ', L: ' + stats.loss + ', D: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
   const unfinished = games.filter(game => !game.over)
   if (unfinished.length) {
-    console.log('Unfinished games found')
+    // console.log('Unfinished games found')
     const gameslist = $('#-games-list')
     $('#-games-modal-games-title').text(unfinished.length + ' unfinished games found!')
     gameslist.html('')
