@@ -22,11 +22,11 @@ const retrieveGames = function (response) {
   $('#-games-modal-games-title').text('No unfinished games!')
   $('#-games-modal-stats').text('Stats: (W: ' + stats.win + ', L: ' + stats.loss + ', D: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
   const unfinished = games.filter(game => !game.over)
+  const gameslist = $('#-games-list')
+  gameslist.html('')
   if (unfinished.length) {
     // console.log('Unfinished games found')
-    const gameslist = $('#-games-list')
     $('#-games-modal-games-title').text(unfinished.length + ' unfinished games found!')
-    gameslist.html('')
     for (let i = 0; i < unfinished.length; i++) {
       const currGame = unfinished[i]
       if (store.finished.includes(currGame.id)) {
