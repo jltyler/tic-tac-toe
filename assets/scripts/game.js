@@ -20,7 +20,7 @@ const retrieveGames = function (response) {
   const games = response.games
   const stats = evaluateGames(response)
   $('#-games-modal-games-title').text('No unfinished games!')
-  $('#-games-modal-stats').text('Stats: (W: ' + stats.win + ', L: ' + stats.loss + ', D: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
+  $('#-games-modal-stats').text('Stats: (Wins: ' + stats.win + ', Losses: ' + stats.loss + ', Draws: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
   const unfinished = games.filter(game => !game.over)
   const gameslist = $('#-games-list')
   gameslist.html('')
