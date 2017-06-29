@@ -7,8 +7,9 @@ let playerTwoTurn = false
 let turnCount = 0
 
 // Player colors
-const playerOneColor = '#00ff00'
-const playerTwoColor = '#0000ff'
+const playerOneColor = '#ff8800'
+const playerTwoColor = '#0044ff'
+const emptyColor = '#e5e5e5'
 
 // Status display
 const gameStatusElement = $('.game-status')
@@ -20,13 +21,13 @@ const retrieveGames = function (response) {
   const games = response.games
   const stats = evaluateGames(response)
   $('#-games-modal-games-title').text('No unfinished games!')
-  $('#-games-modal-stats').text('Stats: (W: ' + stats.win + ', L: ' + stats.loss + ', D: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
+  $('#-games-modal-stats').text('Stats: (Wins: ' + stats.win + ', Losses: ' + stats.loss + ', Draws: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
   const unfinished = games.filter(game => !game.over)
+  const gameslist = $('#-games-list')
+  gameslist.html('')
   if (unfinished.length) {
     // console.log('Unfinished games found')
-    const gameslist = $('#-games-list')
     $('#-games-modal-games-title').text(unfinished.length + ' unfinished games found!')
-    gameslist.html('')
     for (let i = 0; i < unfinished.length; i++) {
       const currGame = unfinished[i]
       if (store.finished.includes(currGame.id)) {
@@ -277,7 +278,7 @@ const newGame = function () {
   gameBoard = newBoard()
   playerTwoTurn = false
   turnCount = 0
-  $('.game-cell').css('background-color', '#000')
+  $('.game-cell').css('background-color', emptyColor)
   return gameBoard
 }
 
