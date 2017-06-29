@@ -29,6 +29,9 @@ const retrieveGames = function (response) {
     gameslist.html('')
     for (let i = 0; i < unfinished.length; i++) {
       const currGame = unfinished[i]
+      if (store.finished.includes(currGame.id)) {
+        continue
+      }
       // console.log('Unfinished game: ', currGame)
       const newElement = $(document.createElement('a'))
       newElement.addClass('list-group-item')
@@ -282,6 +285,7 @@ const gameWon = function (playerTwo) {
   // console.log('Player ', playerTwo ? 'o' : 'x', ' won!')
   // gameStatusElement.css('color', playerTwo ? playerTwoColor : playerOneColor)
   // gameStatusHeader.text(playerTwo ? 'Player O wins!' : 'Player X wins!')
+  store.finished.push(store.currentGame.id)
   store.currentGame = false
   ui.gameWon(playerTwo)
   api.getGames()
@@ -296,6 +300,7 @@ const gameDraw = function () {
   // console.log('Draw!')
   // gameStatusElement.css('color', '#000')
   // gameStatusHeader.text('Draw game!')
+  store.finished.push(store.currentGame.id)
   store.currentGame = false
   ui.gameDraw()
   api.getGames()
