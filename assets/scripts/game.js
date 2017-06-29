@@ -1,5 +1,6 @@
 const api = require('./api')
 const store = require('./store')
+const ui = require('./ui')
 
 // Boolean for telling whose turn it is
 let playerTwoTurn = false
@@ -15,21 +16,41 @@ const gameStatusHeader = gameStatusElement.children('h1')
 
 // API success handlers
 const retrieveGames = function (response) {
-  console.log('retrieveGames(', response, ')')
+  // console.log('retrieveGames(', response, ')')
   const games = response.games
-  evaluateGames(response)
-  if (games.length === 0) {
-    return false
-  } else {
-    return games
+  const stats = evaluateGames(response)
+  $('#-games-modal-games-title').text('No unfinished games!')
+  $('#-games-modal-stats').text('Stats: (W: ' + stats.win + ', L: ' + stats.loss + ', D: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
+  const unfinished = games.filter(game => !game.over)
+  if (unfinished.length) {
+    console.log('Unfinished games found')
+    const gameslist = $('#-games-list')
+    $('#-games-modal-games-title').text(unfinished.length + ' unfinished games found!')
+    gameslist.html('')
+    for (let i = 0; i < unfinished.length; i++) {
+      const currGame = unfinished[i]
+      // console.log('Unfinished game: ', currGame)
+      const newElement = $(document.createElement('a'))
+      newElement.addClass('list-group-item')
+      newElement.attr('href', '#')
+      newElement.text('Select game (' + currGame.id + ')')
+      newElement.attr('data-gameid', currGame.id)
+      newElement.on('click', function (event) {
+        // console.log('CLICK EVENT', event.target)
+        openGame({game: currGame})
+        // console.log('gameClicked hide!')
+        $('#-games-modal').modal('hide')
+      })
+      gameslist.append(newElement)
+    }
   }
 }
 
 const openGame = function (response) {
   if (!response.game || response.game.over) { return false }
-  console.log('Opening game ID: ', response.game.id)
+  // console.log('Opening game ID: ', response.game.id)
   store.currentGame = response.game
-  console.log('store.currentGame: ', store.currentGame)
+  // console.log('store.currentGame: ', store.currentGame)
   return mapGame(response.game)
 }
 
@@ -60,33 +81,33 @@ const evaluateGames = function (response) {
     return record
   }
   for (let i = 0; i < response.games.length; i++) {
-    console.log('=== Evaluating game ' + i + ' (' + response.games[i].id + ')===')
-    console.log(formatBoard(response.games[i].cells))
+    // console.log('=== Evaluating game ' + i + ' (' + response.games[i].id + ')===')
+    // console.log(formatBoard(response.games[i].cells))
     if (!response.games[i].over) {
-      console.log('Game is unfinished!')
+      // console.log('Game is unfinished!')
       record.unfinished++
     } else if (evaluateGame(response.games[i], false)) {
-      console.log('Player X wins!')
+      // console.log('Player X wins!')
       record.win++
     } else if (evaluateGame(response.games[i], true)) {
-      console.log('Player O wins!')
+      // console.log('Player O wins!')
       record.loss++
     } else {
-      console.log('Game was a draw!')
+      // console.log('Game was a draw!')
       record.draw++
     }
   }
-  console.log(record)
+  // console.log(record)
   return record
 }
 
 const retrieveGameID = function (response) {
-  console.log('retrieveGameID(', response, ')')
+  // console.log('retrieveGameID(', response, ')')
   return response.game
 }
 
 const mapGame = function (gameData) {
-  console.log('mapGame(', gameData, ')')
+  // console.log('mapGame(', gameData, ')')
   if (gameData.over) { return false }
   const board = newGame()
   for (let i = 0; i < gameData.cells.length; i++) {
@@ -97,6 +118,10 @@ const mapGame = function (gameData) {
       turnCount++
     }
   }
+  displayTurn(playerTwoTurn)
+  // console.log('mapGame hide!')
+  $('#-games-modal').modal('hide')
+  $('#game-board').removeClass('hidden')
   return true
 }
 
@@ -113,17 +138,23 @@ const sendMove = function (board, index, playerTwo, over = false) {
     }
     api.updateGame(store.currentGame.id, data)
     .done(function (response) {
-      console.log('updateGameSuccess ', response)
+      // console.log('updateGameSuccess ', response)
     })
   } else {
-    console.log('store.currentGame is not a game?')
-    console.log(store)
+    // console.log('store.currentGame is not a game?')
+    // console.log(store)
   }
 }
-
+// HELPERS
 // Helper for getting token
 const getToken = function (playerTwo) {
   return playerTwo ? 'o' : 'x'
+}
+
+// Helper to change game status display
+const displayTurn = function (playerTwo) {
+  gameStatusElement.css('color', playerTwo ? playerTwoColor : playerOneColor)
+  gameStatusHeader.text(playerTwo ? 'Player O\'s turn' : 'Player X\'s turn')
 }
 
 // Helper to make new boards
@@ -148,9 +179,9 @@ const formatBoard = (board) => {
 
 // Helper to change the (visual) cells easier
 const changeCell = function (board, index, playerTwo) {
-  console.log('changeCell(', board, ', ', index, ', ', playerTwo, ')')
+  // console.log('changeCell(', board, ', ', index, ', ', playerTwo, ')')
   board[index] = getToken(playerTwo)
-  console.log('board[index] === ', board[index])
+  // console.log('board[index] === ', board[index])
   const cell = $('.game-cell[data-id="' + index + '"]')
   cell.css('background-color', playerTwo ? playerTwoColor : playerOneColor)
 }
@@ -233,7 +264,7 @@ const checkDiagonalTopRight = function (board, playerTwo) {
 // returns true if move was successful
 // returns false otherwise or if move was invalid
 const attemptMove = function (board, index, playerTwo) {
-  console.log('attemptMove(' + index + ')')
+  // console.log('attemptMove(' + index + ')')
   if (board[index]) { return false }
   changeCell(board, index, playerTwo)
   return true
@@ -248,33 +279,45 @@ const newGame = function () {
 }
 
 const gameWon = function (playerTwo) {
-  console.log('Player ', playerTwo ? 'o' : 'x', ' won!')
-  gameStatusElement.css('color', playerTwo ? playerTwoColor : playerOneColor)
-  gameStatusHeader.text(playerTwo ? 'Player O wins!' : 'Player X wins!')
+  // console.log('Player ', playerTwo ? 'o' : 'x', ' won!')
+  // gameStatusElement.css('color', playerTwo ? playerTwoColor : playerOneColor)
+  // gameStatusHeader.text(playerTwo ? 'Player O wins!' : 'Player X wins!')
   store.currentGame = false
+  ui.gameWon(playerTwo)
+  api.getGames()
+  .done(retrieveGames)
+  .catch(function () {
+    // console.log('onGetAllGames error!')
+  })
   newGame()
 }
 
 const gameDraw = function () {
-  console.log('Draw!')
-  gameStatusElement.css('color', '#000')
-  gameStatusHeader.text('Draw game!')
+  // console.log('Draw!')
+  // gameStatusElement.css('color', '#000')
+  // gameStatusHeader.text('Draw game!')
   store.currentGame = false
+  ui.gameDraw()
+  api.getGames()
+  .done(retrieveGames)
+  .catch(function () {
+    // console.log('onGetAllGames error!')
+  })
   newGame()
 }
 
 // MAIN GAME LOGIC
 // Attempts a move and checks for a win if it was a successful move
 const makeMove = function (index) {
-  console.log('makeMove')
+  // console.log('makeMove')
   if (attemptMove(gameBoard, index, playerTwoTurn)) {
-    console.log('attemptMove true')
-    console.log(formatBoard(gameBoard))
+    // console.log('attemptMove true')
+    // console.log(formatBoard(gameBoard))
     const size = getBoardSize(gameBoard)
     const row = Math.floor(index / size)
     const col = index - row * size
     turnCount++
-    console.log('Turn: ' + turnCount + ' / ' + maxTurns)
+    // console.log('Turn: ' + turnCount + ' / ' + maxTurns)
     if (checkHorizontal(gameBoard, row, playerTwoTurn) ||
     checkVertical(gameBoard, col, playerTwoTurn) ||
     checkDiagonalTopRight(gameBoard, playerTwoTurn) ||
@@ -288,8 +331,9 @@ const makeMove = function (index) {
     } else {
       sendMove(gameBoard, index, playerTwoTurn)
       playerTwoTurn = !playerTwoTurn
-      gameStatusElement.css('color', playerTwoTurn ? playerTwoColor : playerOneColor)
-      gameStatusHeader.text(playerTwoTurn ? 'Player O\'s turn' : 'Player X\'s turn')
+      displayTurn(playerTwoTurn)
+      // gameStatusElement.css('color', playerTwoTurn ? playerTwoColor : playerOneColor)
+      // gameStatusHeader.text(playerTwoTurn ? 'Player O\'s turn' : 'Player X\'s turn')
     }
   }
 }
