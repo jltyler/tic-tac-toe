@@ -1,27 +1,16 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
-
-
-.signin-form {
-  display: inline;
-}
-
-.signout-form {
-  display: inline;
-}
-
-.game-status {
+.game-status > h1 {
   text-align: center;
-}
-
-.game-board {
-  // visibility: hidden;
+  font-family: 'Rock Salt', cursive;
+  font-size: 48px;
+  padding-bottom: 32px;
 }
 
 .game-cell {
   display: inline-block;
-  background-color: #000000;
   height: 150px;
-  border: 5px solid red;
+  border: 5px solid black;
+  border-radius: 30px;
 }
