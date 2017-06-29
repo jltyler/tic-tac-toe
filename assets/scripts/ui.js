@@ -10,7 +10,7 @@ const signInSuccess = (response) => {
   store.user = response.user
   $('#-signup-modal').modal('hide')
   $('#-signup-button').addClass('hidden')
-  $('#-logout-button').addClass('hidden')
+  $('#-logout-button').removeClass('hidden')
   $('#-changepwd-button').removeClass('hidden')
   $('#-games-navbar-button').removeClass('hidden')
 }
@@ -22,7 +22,7 @@ const signOutSuccess = (response) => {
   store.user = undefined
   store.currentGame = false
   $('#-signup-button').removeClass('hidden')
-  $('#-logout-button').removeClass('hidden')
+  $('#-logout-button').addClass('hidden')
   $('#-changepwd-button').addClass('hidden')
   $('#-games-navbar-button').addClass('hidden')
   $('#game-board').addClass('hidden')
