@@ -1,53 +1,42 @@
 const store = require('./store')
-// const api = require('./api')
-// const game = require('./game')
 
 const signUpSuccess = (response) => {
-  // console.log('signUp Success: ', response)
-  // $('#-signup-modal').modal('hide')
 }
 
 const signUpError = (response) => {
-  // console.log('signUp Failure: ', response)
 }
 
 const signInSuccess = (response) => {
-  // console.log('signIn Success: ', response)
   store.user = response.user
-  // console.log('Store: ', store)
   $('#-signup-modal').modal('hide')
-  $('#-signup-button').toggleClass('hidden')
-  $('#-logout-button').toggleClass('hidden')
-  $('#-changepwd-button').toggleClass('hidden')
-  $('#-games-navbar-button').toggleClass('hidden')
+  $('#-signup-button').addClass('hidden')
+  $('#-logout-button').addClass('hidden')
+  $('#-changepwd-button').removeClass('hidden')
+  $('#-games-navbar-button').removeClass('hidden')
 }
 
 const signInError = (response) => {
-  // console.log('signIn Failure: ', response)
 }
 
 const signOutSuccess = (response) => {
-  // console.log('signOut Success: ', response)
   store.user = undefined
-  $('#-signup-button').toggleClass('hidden')
-  $('#-logout-button').toggleClass('hidden')
-  $('#-changepwd-button').toggleClass('hidden')
-  $('#-games-navbar-button').toggleClass('hidden')
+  store.currentGame = false
+  $('#-signup-button').removeClass('hidden')
+  $('#-logout-button').removeClass('hidden')
+  $('#-changepwd-button').addClass('hidden')
+  $('#-games-navbar-button').addClass('hidden')
   $('#game-board').addClass('hidden')
   forceSignIn()
 }
 
 const signOutError = (response) => {
-  // console.log('signOut Failure: ', response)
 }
 
 const changePasswordSuccess = (response) => {
-  // console.log('changePassword Success: ', response)
   $('#-changepwd-modal').modal('hide')
 }
 
 const changePasswordError = (response) => {
-  // console.log('changePassword Failure: ', response)
 }
 
 const forceNewGame = function () {
@@ -59,13 +48,11 @@ const forceNewGame = function () {
 const gameWon = function (playerTwo) {
   $('#-winner-modal-title').text(playerTwo ? 'Player O wins!' : 'Player X wins!')
   $('#game-board').addClass('hidden')
-  // $('#-games-modal').modal('show')
   $('#-winner-modal').modal('show')
 }
 
 const gameDraw = function () {
   $('#-winner-modal-title').text('Cat\'s game!')
-  // $('#-games-modal').modal('show')
   $('#game-board').addClass('hidden')
   $('#-winner-modal').modal('show')
 }

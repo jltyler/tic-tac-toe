@@ -17,7 +17,6 @@ const gameStatusHeader = gameStatusElement.children('h1')
 
 // API success handlers
 const retrieveGames = function (response) {
-  // console.log('retrieveGames(', response, ')')
   const games = response.games
   const stats = evaluateGames(response)
   $('#-games-modal-games-title').text('No unfinished games!')
@@ -26,23 +25,19 @@ const retrieveGames = function (response) {
   const gameslist = $('#-games-list')
   gameslist.html('')
   if (unfinished.length) {
-    // console.log('Unfinished games found')
     $('#-games-modal-games-title').text(unfinished.length + ' unfinished games found!')
     for (let i = 0; i < unfinished.length; i++) {
       const currGame = unfinished[i]
       if (store.finished.includes(currGame.id)) {
         continue
       }
-      // console.log('Unfinished game: ', currGame)
       const newElement = $(document.createElement('a'))
       newElement.addClass('list-group-item')
       newElement.attr('href', '#')
       newElement.text('Select game (' + currGame.id + ')')
       newElement.attr('data-gameid', currGame.id)
       newElement.on('click', function (event) {
-        // console.log('CLICK EVENT', event.target)
         openGame({game: currGame})
-        // console.log('gameClicked hide!')
         $('#-games-modal').modal('hide')
       })
       gameslist.append(newElement)
@@ -52,9 +47,7 @@ const retrieveGames = function (response) {
 
 const openGame = function (response) {
   if (!response.game || response.game.over) { return false }
-  // console.log('Opening game ID: ', response.game.id)
   store.currentGame = response.game
-  // console.log('store.currentGame: ', store.currentGame)
   return mapGame(response.game)
 }
 
@@ -85,33 +78,20 @@ const evaluateGames = function (response) {
     return record
   }
   for (let i = 0; i < response.games.length; i++) {
-    // console.log('=== Evaluating game ' + i + ' (' + response.games[i].id + ')===')
-    // console.log(formatBoard(response.games[i].cells))
     if (!response.games[i].over) {
-      // console.log('Game is unfinished!')
       record.unfinished++
     } else if (evaluateGame(response.games[i], false)) {
-      // console.log('Player X wins!')
       record.win++
     } else if (evaluateGame(response.games[i], true)) {
-      // console.log('Player O wins!')
       record.loss++
     } else {
-      // console.log('Game was a draw!')
       record.draw++
     }
   }
-  // console.log(record)
   return record
 }
 
-const retrieveGameID = function (response) {
-  // console.log('retrieveGameID(', response, ')')
-  return response.game
-}
-
 const mapGame = function (gameData) {
-  // console.log('mapGame(', gameData, ')')
   if (gameData.over) { return false }
   const board = newGame()
   for (let i = 0; i < gameData.cells.length; i++) {
@@ -123,7 +103,6 @@ const mapGame = function (gameData) {
     }
   }
   displayTurn(playerTwoTurn)
-  // console.log('mapGame hide!')
   $('#-games-modal').modal('hide')
   $('#game-board').removeClass('hidden')
   return true
@@ -142,11 +121,8 @@ const sendMove = function (board, index, playerTwo, over = false) {
     }
     api.updateGame(store.currentGame.id, data)
     .done(function (response) {
-      // console.log('updateGameSuccess ', response)
     })
   } else {
-    // console.log('store.currentGame is not a game?')
-    // console.log(store)
   }
 }
 // HELPERS
@@ -168,24 +144,9 @@ const newBoard = function (size = 3) {
   return board
 }
 
-// Helper to format the board for console output
-const formatBoard = (board) => {
-  let formatted = ''
-  const size = getBoardSize(board)
-  for (let i = 0; i < board.length; i++) {
-    formatted += board[i] ? board[i] : '-'
-    if ((i % size === size - 1) /* && (i !== board.length - 1) */) {
-      formatted += '\n'
-    }
-  }
-  return formatted
-}
-
 // Helper to change the (visual) cells easier
 const changeCell = function (board, index, playerTwo) {
-  // console.log('changeCell(', board, ', ', index, ', ', playerTwo, ')')
   board[index] = getToken(playerTwo)
-  // console.log('board[index] === ', board[index])
   const cell = $('.game-cell[data-id="' + index + '"]')
   cell.css('background-color', playerTwo ? playerTwoColor : playerOneColor)
 }
@@ -209,7 +170,6 @@ let gameBoard = newBoard() // ['','','','','','','','','']
 const maxTurns = gameBoard.length
 
 const checkHorizontal = function (board, row, playerTwo) {
-  // console.log('checkHorizontal')
   const size = getBoardSize(board)
   const y = row * size
   const token = getToken(playerTwo)
@@ -223,7 +183,6 @@ const checkHorizontal = function (board, row, playerTwo) {
 }
 
 const checkVertical = function (board, col, playerTwo) {
-  // console.log('checkVertical')
   const size = getBoardSize(board)
   const token = getToken(playerTwo)
   if (!token) { return false }
@@ -236,12 +195,10 @@ const checkVertical = function (board, col, playerTwo) {
 }
 
 const checkDiagonalTopLeft = function (board, playerTwo) {
-  // console.log('checkDiagonalTopLeft')
   const size = getBoardSize(board)
   const token = getToken(playerTwo)
   if (!token) { return false }
   for (let i = 0; i < size; i++) {
-    // console.log(board[i * size + i])
     if (board[i * size + i] !== token) {
       return false
     }
@@ -250,7 +207,6 @@ const checkDiagonalTopLeft = function (board, playerTwo) {
 }
 
 const checkDiagonalTopRight = function (board, playerTwo) {
-  // console.log('checkDiagonalTopRight')
   const size = getBoardSize(board)
   const sizem = size - 1
   const token = getToken(playerTwo)
@@ -268,7 +224,6 @@ const checkDiagonalTopRight = function (board, playerTwo) {
 // returns true if move was successful
 // returns false otherwise or if move was invalid
 const attemptMove = function (board, index, playerTwo) {
-  // console.log('attemptMove(' + index + ')')
   if (board[index]) { return false }
   changeCell(board, index, playerTwo)
   return true
@@ -283,7 +238,6 @@ const newGame = function () {
 }
 
 const gameWon = function (playerTwo) {
-  // console.log('Player ', playerTwo ? 'o' : 'x', ' won!')
   // gameStatusElement.css('color', playerTwo ? playerTwoColor : playerOneColor)
   // gameStatusHeader.text(playerTwo ? 'Player O wins!' : 'Player X wins!')
   store.finished.push(store.currentGame.id)
@@ -292,13 +246,11 @@ const gameWon = function (playerTwo) {
   api.getGames()
   .done(retrieveGames)
   .catch(function () {
-    // console.log('onGetAllGames error!')
   })
   newGame()
 }
 
 const gameDraw = function () {
-  // console.log('Draw!')
   // gameStatusElement.css('color', '#000')
   // gameStatusHeader.text('Draw game!')
   store.finished.push(store.currentGame.id)
@@ -307,7 +259,6 @@ const gameDraw = function () {
   api.getGames()
   .done(retrieveGames)
   .catch(function () {
-    // console.log('onGetAllGames error!')
   })
   newGame()
 }
@@ -315,15 +266,11 @@ const gameDraw = function () {
 // MAIN GAME LOGIC
 // Attempts a move and checks for a win if it was a successful move
 const makeMove = function (index) {
-  // console.log('makeMove')
   if (attemptMove(gameBoard, index, playerTwoTurn)) {
-    // console.log('attemptMove true')
-    // console.log(formatBoard(gameBoard))
     const size = getBoardSize(gameBoard)
     const row = Math.floor(index / size)
     const col = index - row * size
     turnCount++
-    // console.log('Turn: ' + turnCount + ' / ' + maxTurns)
     if (checkHorizontal(gameBoard, row, playerTwoTurn) ||
     checkVertical(gameBoard, col, playerTwoTurn) ||
     checkDiagonalTopRight(gameBoard, playerTwoTurn) ||
