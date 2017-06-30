@@ -105,6 +105,7 @@ const mapGame = function (gameData) {
   displayTurn(playerTwoTurn)
   $('#-games-modal').modal('hide')
   $('#game-board').removeClass('hidden')
+  $('#-games-button').addClass('hidden')
   return true
 }
 

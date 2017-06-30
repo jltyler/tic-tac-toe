@@ -1,16 +1,30 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
+
 .game-status > h1 {
-  text-align: center;
-  font-family: 'Rock Salt', cursive;
+  font-family: 'Architects Daughter', cursive;
   font-size: 48px;
   padding-bottom: 32px;
+  text-align: center;
 }
 
 .game-cell {
+  border-radius: 30px;
+  border: 5px solid black;
   display: inline-block;
   height: 150px;
-  border: 5px solid black;
-  border-radius: 30px;
+}
+
+@media (max-width: 575px) {
+  .game-cell {
+    border-radius: 15px;
+    border: 2px solid black;
+    height: 90px;
+  }
+
+  .game-status > h1 {
+    font-size: 36px;
+    padding-bottom: 16px;
+  }
 }

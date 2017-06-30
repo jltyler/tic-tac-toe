@@ -13,6 +13,7 @@ const signInSuccess = (response) => {
   $('#-logout-button').removeClass('hidden')
   $('#-changepwd-button').removeClass('hidden')
   $('#-games-navbar-button').removeClass('hidden')
+  $('#-games-button').removeClass('hidden')
 }
 
 const signInError = (response) => {
@@ -26,6 +27,7 @@ const signOutSuccess = (response) => {
   $('#-changepwd-button').addClass('hidden')
   $('#-games-navbar-button').addClass('hidden')
   $('#game-board').addClass('hidden')
+  $('#-games-button').addClass('hidden')
   forceSignIn()
 }
 
@@ -49,36 +51,20 @@ const gameWon = function (playerTwo) {
   $('#-winner-modal-title').text(playerTwo ? 'Player O wins!' : 'Player X wins!')
   $('#game-board').addClass('hidden')
   $('#-winner-modal').modal('show')
+  $('#-games-button').removeClass('hidden')
 }
 
 const gameDraw = function () {
   $('#-winner-modal-title').text('Cat\'s game!')
   $('#game-board').addClass('hidden')
   $('#-winner-modal').modal('show')
+  $('#-games-button').removeClass('hidden')
 }
 
 const forceSignIn = function () {
   if (!store.user) {
     $('#-signup-modal').modal('show')
   }
-}
-
-const populateGamesList = function (gamesData) {
-  const elements = []
-  const gameslist = $('#-games-list')
-  gameslist.html('')
-  if (gamesData.length > 0) {
-    for (let i = 0; i < gamesData.length; i++) {
-      const currGame = gamesData[i]
-      const newElement = $(document.createElement('li'))
-      newElement.addClass('list-group-item')
-      newElement.text('Select game (' + currGame.id + ')')
-      newElement.attr('data-gameid', currGame.id)
-      elements.append(newElement)
-      gameslist.append(newElement)
-    }
-  }
-  return elements
 }
 
 module.exports = {
@@ -93,6 +79,5 @@ module.exports = {
   forceSignIn,
   forceNewGame,
   gameWon,
-  gameDraw,
-  populateGamesList
+  gameDraw
 }

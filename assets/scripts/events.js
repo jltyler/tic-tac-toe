@@ -89,7 +89,7 @@ const attachHandlers = () => {
 
   // Game API events
   $('#-games-modal-newgame').on('click', onNewGame)
-  $('#-games-navbar-button').on('click', function (event) {
+  $('#-games-navbar-button, #-games-button').on('click', function (event) {
     onGetAllGames(event)
     $('#-games-modal').modal('show')
   })

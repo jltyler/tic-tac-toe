@@ -7,7 +7,7 @@
 
   <!-- Do not add `link` tags unless you know what you are doing -->
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
   <!-- Do not add `script` tags unless you know what you are doing -->
   <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
   <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
@@ -32,7 +32,7 @@
       <div class="collapse navbar-collapse" id="-main-navbar-collapse">
         <ul class="nav navbar-nav">
           <li><a href="#" data-toggle="modal" data-target="#-signup-modal" id="-signup-button">Login or Signup</a></li>
-          <li class="hidden" id="-games-navbar-button"><a href="#">Find Games</a></li>
+          <li class="hidden" id="-games-navbar-button"><a href="#">Games</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a class="hidden" id="-logout-button" href="#">Logout</a></li>
@@ -44,24 +44,27 @@
   <!-- NAVBAR END -->
   <div class="container-fluid">
     <!-- GAME BOARD -->
-    <div class="container game-board hidden" id="game-board">
+    <div class="container-fluid">
+      <button type="button" class=" hidden btn btn-primary btn-lg btn-block" name="button" id="-games-button">Games</button>
+    </div>
+    <div class="container-fluid game-board hidden" id="game-board">
       <div class="row game-status">
         <h1>------------</h1>
       </div>
       <div class="row game-row" data-row="0">
-        <div class="col-xs-4 game-cell" data-id="0"></div>
-        <div class="col-xs-4 game-cell" data-id="1"></div>
-        <div class="col-xs-4 game-cell" data-id="2"></div>
+        <div class="col-xs-2 col-xs-offset-3 game-cell" data-id="0"></div>
+        <div class="col-xs-2 game-cell" data-id="1"></div>
+        <div class="col-xs-2 game-cell" data-id="2"></div>
       </div>
       <div class="row game-row" data-row="1">
-        <div class="col-xs-4 game-cell" data-id="3"></div>
-        <div class="col-xs-4 game-cell" data-id="4"></div>
-        <div class="col-xs-4 game-cell" data-id="5"></div>
+        <div class="col-xs-2 col-xs-offset-3 game-cell" data-id="3"></div>
+        <div class="col-xs-2 game-cell" data-id="4"></div>
+        <div class="col-xs-2 game-cell" data-id="5"></div>
       </div>
       <div class="row game-row" data-row="2">
-        <div class="col-xs-4 game-cell" data-id="6"></div>
-        <div class="col-xs-4 game-cell" data-id="7"></div>
-        <div class="col-xs-4 game-cell" data-id="8"></div>
+        <div class="col-xs-2 col-xs-offset-3 game-cell" data-id="6"></div>
+        <div class="col-xs-2 game-cell" data-id="7"></div>
+        <div class="col-xs-2 game-cell" data-id="8"></div>
       </div>
     </div>
   </div>
@@ -86,13 +89,13 @@
             <div class="form-group">
               <label class="col-sm-2 control-label" for="-signin-modal-email">Username</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="-signin-modal-email" placeholder="Username" name="credentials[email]"/>
+                <input type="text" class="form-control" id="-signin-modal-email" placeholder="Username" name="credentials[email]" value="testemail3"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label" for="-signin-modal-pwd">Password</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" id="-signin-modal-pwd" placeholder="Password" name="credentials[password]" />
+                <input type="password" class="form-control" id="-signin-modal-pwd" placeholder="Password" name="credentials[password]" value="123"/>
               </div>
             </div>
             <div class="form-group">
