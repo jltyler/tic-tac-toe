@@ -106,6 +106,7 @@ const mapGame = function (gameData) {
   $('#-games-modal').modal('hide')
   $('#game-board').removeClass('hidden')
   $('#-games-button').addClass('hidden')
+  $('#-landing-image').addClass('hidden')
   return true
 }
 
