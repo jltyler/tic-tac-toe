@@ -66,12 +66,18 @@ const forceSignIn = function () {
 }
 
 const showGameBoard = function () {
-
+  $('#game-board').removeClass('hidden')
+  $('#-games-button').addClass('hidden')
 }
 
 const hideGameBoard = function () {
   $('#game-board').addClass('hidden')
   $('#-games-button').removeClass('hidden')
+}
+
+const resetGamesModal = function (stats) {
+  $('#-games-modal-games-title').text('No unfinished games!')
+  $('#-games-modal-stats').text('Stats: (Wins: ' + stats.win + ', Losses: ' + stats.loss + ', Draws: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + stats.total + ')')
 }
 
 module.exports = {
@@ -88,5 +94,6 @@ module.exports = {
   gameWon,
   gameDraw,
   showGameBoard,
-  hideGameBoard
+  hideGameBoard,
+  resetGamesModal
 }

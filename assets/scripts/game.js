@@ -19,8 +19,7 @@ const gameStatusHeader = gameStatusElement.children('h1')
 const retrieveGames = function (response) {
   const games = response.games
   const stats = evaluateGames(response)
-  $('#-games-modal-games-title').text('No unfinished games!')
-  $('#-games-modal-stats').text('Stats: (Wins: ' + stats.win + ', Losses: ' + stats.loss + ', Draws: ' + stats.draw + ', Unfinished: ' + stats.unfinished + ', Total: ' + games.length + ')')
+  ui.resetGamesModal(stats)
   const unfinished = games.filter(game => !game.over)
   const gameslist = $('#-games-list')
   gameslist.html('')
@@ -72,12 +71,14 @@ const evaluateGames = function (response) {
     win: 0,
     loss: 0,
     draw: 0,
-    unfinished: 0
+    unfinished: 0,
+    total: 0
   }
   if (response.games.length === 0) {
     return record
   }
   for (let i = 0; i < response.games.length; i++) {
+    record.total++
     if (!response.games[i].over) {
       record.unfinished++
     } else if (evaluateGame(response.games[i], false)) {
@@ -104,8 +105,7 @@ const mapGame = function (gameData) {
   }
   displayTurn(playerTwoTurn)
   $('#-games-modal').modal('hide')
-  $('#game-board').removeClass('hidden')
-  $('#-games-button').addClass('hidden')
+  ui.showGameBoard()
   $('#-landing-image').addClass('hidden')
   return true
 }
