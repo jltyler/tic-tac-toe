@@ -49,22 +49,29 @@ const forceNewGame = function () {
 
 const gameWon = function (playerTwo) {
   $('#-winner-modal-title').text(playerTwo ? 'Player O wins!' : 'Player X wins!')
-  $('#game-board').addClass('hidden')
+  hideGameBoard()
   $('#-winner-modal').modal('show')
-  $('#-games-button').removeClass('hidden')
 }
 
 const gameDraw = function () {
   $('#-winner-modal-title').text('Cat\'s game!')
-  $('#game-board').addClass('hidden')
+  hideGameBoard()
   $('#-winner-modal').modal('show')
-  $('#-games-button').removeClass('hidden')
 }
 
 const forceSignIn = function () {
   if (!store.user) {
     $('#-signup-modal').modal('show')
   }
+}
+
+const showGameBoard = function () {
+
+}
+
+const hideGameBoard = function () {
+  $('#game-board').addClass('hidden')
+  $('#-games-button').removeClass('hidden')
 }
 
 module.exports = {
@@ -79,5 +86,7 @@ module.exports = {
   forceSignIn,
   forceNewGame,
   gameWon,
-  gameDraw
+  gameDraw,
+  showGameBoard,
+  hideGameBoard
 }
